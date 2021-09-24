@@ -6,7 +6,6 @@ using namespace std;
 
 const int maxN = 20;
 const int maxK = 1001;
-const int maxM = 10;
 
 int n, m, k, q;
 
