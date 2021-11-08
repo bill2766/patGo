@@ -89,6 +89,9 @@ node* create(int datas[], int n){
     return root;
 }
 
+//after表示要没就一直没，不然又有Node的话表示不是complete树了
+int isComplete = 1;
+int after = 0;
 void layerOrder(node* root){
     queue<node*> q;
     q.push(root);
@@ -97,8 +100,18 @@ void layerOrder(node* root){
         node* nowNode = q.front();
         q.pop();
         printf("%d",nowNode->data);
-        if(nowNode->lchild != NULL) q.push(nowNode->lchild);
-        if(nowNode->rchild != NULL) q.push(nowNode->rchild);
+        if(nowNode->lchild != NULL){
+            if(after) isComplete = 0;
+            q.push(nowNode->lchild);
+        }else{
+            after = 1;
+        }
+        if(nowNode->rchild != NULL){
+            if(after) isComplete = 0;
+            q.push(nowNode->rchild);
+        }else{
+            after = 1;
+        }
         if(!q.empty()){
             printf(" ");
         }else{
@@ -107,17 +120,6 @@ void layerOrder(node* root){
     }
 }
 
-int maxIndex;
-void dfs(node* root, int index){
-    if(root == NULL){
-        return;
-    }
-    if(index > maxIndex){
-        maxIndex = index;
-    }
-    dfs(root->lchild, index*2);
-    dfs(root->rchild, index*2+1);
-}
 
 int main(){
     int n;
@@ -130,10 +132,8 @@ int main(){
 
     layerOrder(base);
 
-    maxIndex = -1;
-    dfs(base, 1);
 
-    if(maxIndex == n){
+    if(isComplete){
         printf("YES");
     }else{
         printf("NO");
